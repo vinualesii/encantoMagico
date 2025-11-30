@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Agendamento e Contrato</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Baloo+2:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --accent: #FFD166;
+            --light: #F7FFF7;
+            --dark: #2E3C5A;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #F7FFF7;
+            background-image: url('/api/placeholder/400/400');
+            background-repeat: repeat;
+            background-size: 200px;
+            color: var(--dark);
+            padding-bottom: 50px;
+        }
+        
+        .form-container {
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow);
+            overflow: hidden;
+            margin-bottom: 30px;
+            background-color: white;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary), #a67dff);
+            color: white;
+            border: none;
+            padding: 25px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header h2 {
+            font-family: 'Baloo 2', cursive;
+            margin: 0;
+            font-weight: 700;
+            position: relative;
+            text-align: center;
+            font-size: 2rem;
+        }
+        
+        .card-header::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-image: url('/api/placeholder/400/100');
+            background-size: contain;
+            opacity: 0.1;
+        }
+        
+        .card-body {
+            padding: 30px;
+            background-color: white;
+        }
+        
+        .section-title {
+            font-family: 'Baloo 2', cursive;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed var(--accent);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title::before {
+            content: '✨';
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #E0E0E0;
+            padding: 12px 15px;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+        
+        .form-control:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 0.2rem rgba(78, 205, 196, 0.25);
+        }
+        
+        select.form-control {
+            padding: 8px 30px 8px 12px;
+            cursor: pointer;
+            line-height: 1.5;
+            height: auto;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        
+        select.form-control option {
+            padding: 8px 12px;
+            background-color: white;
+            color: var(--dark);
+            line-height: 1.5;
+        }
+        
+        select.form-control option:hover,
+        select.form-control option:checked {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, var(--secondary), #83EAE1);
+            color: white;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+            display: block;
+            width: 100%;
+            margin-top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #3DB3AC, #75D1C8);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(78, 205, 196, 0.5);
+        }
+        
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin: 10px 0;
+        }
+        
+        .custom-radio {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .custom-radio input {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        
+        .animate-card {
+            animation: fadeInUp 0.8s;
+        }
+        
+        @media (max-width: 768px) {
+            .card-header h2 {
+                font-size: 1.6rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .card-body {
+                padding: 20px;
+            }
+        }
+        
+        .decorative-element {
+            position: absolute;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .balloon {
+            top: -20px;
+            right: 30px;
+            transform: rotate(20deg);
+            font-size: 2rem;
+        }
+        
+        .tooltip-icon {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 18px;
+            font-size: 12px;
+            margin-left: 5px;
+            cursor: help;
+        }
+        
+        .required-field::after {
+            content: '*';
+            color: var(--primary);
+            margin-left: 4px;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .step {
+            flex: 1;
+            text-align: center;
+            padding: 15px 10px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            margin: 0 5px;
+            font-weight: 600;
+            color: #adb5bd;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .step.active {
+            background-color: var(--accent);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .button-container {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .button-container .btn {
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .button-container .btn-primary {
+            background: linear-gradient(135deg, var(--secondary), #83EAE1);
+            border: none;
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+        }
+
+        .button-container .btn-secondary {
+            background: #fff;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        .button-container .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .is-invalid {
+            border-color: var(--primary) !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+        }
+
+        .invalid-feedback {
+            display: block;
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 80%;
+            color: var(--primary);
+        }
+        
+        .event-details-card {
+            background-color: #F9F8FF;
+        }
+        
+        .personal-data-icon::before {
+            content: '👤';
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .event-data-icon::before {
+            content: '🎉';
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="step-indicator">
+            <div class="step active" data-step="1">Dados Pessoais</div>
+            <div class="step" data-step="2">Detalhes do Evento</div>
+            <div class="step" data-step="3">Pagamento</div>
+        </div>
+        
+        <form action="process_form.php" method="post" onsubmit="return validateForm(event);">
+            <div class="card animate-card">
+                <div class="card-header">
+                    <h2>FORMULÁRIO DE AGENDAMENTO</h2>
+                    <div class="decorative-element balloon">🎈</div>
+                </div>
+                <div class="card-body">
+                    <h4 class="section-title personal-data-icon">Dados Pessoais</h4>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="nome" class="required-field">Nome</label>
+                            <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite seu nome completo">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="nacionalidade">Nacionalidade</label>
+                            <input type="text" class="form-control" id="nacionalidade" name="nacionalidade" placeholder="Ex: Brasileira">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="estadocivil">Estado Civil</label>
+                            <select class="form-control" id="estadocivil" name="estadocivil" required>
+                                <option value="">Selecione...</option>
+                                <option value="Solteiro(a)">Solteiro(a)</option>
+                                <option value="Casado(a)">Casado(a)</option>
+                                <option value="União Estável">União Estável</option>
+                                <option value="Divorciado(a)">Divorciado(a)</option>
+                                <option value="Viúvo(a)">Viúvo(a)</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="profissao">Profissão</label>
+                            <input type="text" class="form-control" id="profissao" name="profissao" placeholder="Digite sua profissão">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="cpf" class="required-field">CPF</label>
+                            <input type="text" class="form-control" id="cpf" name="cpf" placeholder="000.000.000-00">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="cnpj">CNPJ (Caso seja empresa)</label>
+                            <input type="text" class="form-control" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="celular" class="required-field">Celular</label>
+                            <input type="text" class="form-control" id="celular" name="celular" placeholder="(00) 00000-0000">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="endereco" class="required-field">Endereço</label>
+                            <input type="text" class="form-control" id="endereco" name="endereco" placeholder="Rua, número e complemento">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="bairro">Bairro</label>
+                            <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Digite seu bairro">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="cidade" class="required-field">Cidade</label>
+                            <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Digite sua cidade">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="cep">CEP</label>
+                            <input type="text" class="form-control" id="cep" name="cep" placeholder="00000-000">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="email" class="required-field">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="seu@email.com">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="aniversariante" class="required-field">Aniversariante</label>
+                            <input type="text" class="form-control" id="aniversariante" name="aniversariante" placeholder="Nome do aniversariante">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card animate-card event-details-card">
+                <div class="card-body">
+                    <h4 class="section-title event-data-icon">Dados do Evento</h4>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="dataEvento" class="required-field">Data do Evento</label>
+                            <input type="date" class="form-control" id="data_evento" name="data_evento">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="localEvento" class="required-field">Local do Evento</label>
+                            <input type="text" class="form-control" id="local_evento" name="local_evento" placeholder="Nome do local">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="enderecoEvento" class="required-field">Endereço do Evento</label>
+                            <input type="text" class="form-control" id="endereco_evento" name="endereco_evento" placeholder="Rua, número e complemento">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="cidadeEvento">Cidade do Evento</label>
+                            <input type="text" class="form-control" id="cidade_evento" name="cidade_evento" placeholder="Digite a cidade do evento">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="cepEvento">CEP do Evento</label>
+                            <input type="text" class="form-control" id="cep_evento" name="cep_evento" placeholder="00000-000">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="produto" class="required-field">Tema da Festa</label>
+                            <select class="form-control" id="produto" name="produto" required>
+                                <option value="">Selecione um tema</option>
+                               
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="font-weight-bold">Autoriza o uso da imagem do aniversariante:</label>
+                        <div class="radio-group">
+                            <label class="custom-radio">
+                                <input type="radio" id="autorizacao-sim" name="autorizacao" value="0"> Sim
+                            </label>
+                            <label class="custom-radio">
+                                <input type="radio" id="autorizacao-nao" name="autorizacao" value="1"> Não
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="inicioEvento" class="required-field">Horário de Início</label>
+                            <input type="time" class="form-control" id="inicio_evento" name="inicio_evento">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="encerramentoEvento" class="required-field">Horário de Término</label>
+                            <input type="time" class="form-control" id="encerramento_evento" name="encerramento_evento">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="valor_evento" class="required-field">Valor do Evento (R$)</label>
+                            <input type="number" step="0.01" class="form-control" id="valor_evento" name="valor_evento" required>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="deslocamento">Deslocamento (R$)</label>
+                            <input type="number" step="0.01" class="form-control" id="deslocamento" name="deslocamento" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="tipo_pagamento" class="required-field">Tipo de Pagamento</label>
+                            <select class="form-control" id="tipo_pagamento" name="tipo_pagamento" required>
+                                <option value="" disabled selected hidden>Selecione</option>
+                                <option value="1">À Vista</option>
+                                <option value="0">Com Entrada</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4" id="adiantamento_group" style="display: none;">
+                            <label for="adiantamento">Percentual de Adiantamento (%):</label>
+                            <input type="number" step="0.01" class="form-control" id="adiantamento" name="adiantamento" min="1" max="100">
+                        </div>
+                        <div class="form-group col-md-4" id="sinal_pago_group" style="display: none;">
+                            <label for="sinal_pago">Sinal Pago (R$)</label>
+                            <input type="number" step="0.01" class="form-control" id="sinal_pago" name="sinal_pago" >
+                            <input type="hidden" id="saldo_devedor" name="saldo_devedor">
+                        </div>
+                        <div class="form-group col-md-4" id="valor_restante_group" style="display: none;">
+                            <label for="valor_restante">Valor Restante (R$)</label>
+                            <input type="number" step="0.01" class="form-control" id="valor_restante" name="valor_restante" >
+                        </div>
+                    </div>
+                    
+                    <div class="button-container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary w-100">Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const steps = document.querySelectorAll('.step');
+            const sections = document.querySelectorAll('.card');
+            let currentStep = 1;
+
+            // Elementos do formulário
+            const valorEventoInput = document.getElementById('valor_evento');
+            const deslocamentoInput = document.getElementById('deslocamento');
+            const tipoPagamentoSelect = document.getElementById('tipo_pagamento');
+            const adiantamentoInput = document.getElementById('adiantamento');
+            const sinalPagoInput = document.getElementById('sinal_pago');
+            const valorRestanteInput = document.getElementById('valor_restante');
+            const saldoDevedorInput = document.getElementById('saldo_devedor');
+            
+            const adiantamentoGroup = document.getElementById('adiantamento_group');
+            const sinalPagoGroup = document.getElementById('sinal_pago_group');
+            const valorRestanteGroup = document.getElementById('valor_restante_group');
+
+            // FUNÇÃO PRINCIPAL DE CÁLCULO
+function calcularValores(origem) {
+    const valorEvento = parseFloat(valorEventoInput.value) || 0;
+    const deslocamento = parseFloat(deslocamentoInput.value) || 0;
+    let percentualAdiantamento = adiantamentoInput.value === '' ? null : parseFloat(adiantamentoInput.value);
+    let sinalPago = sinalPagoInput.value === '' ? null : parseFloat(sinalPagoInput.value);
+
+    const totalComDeslocamento = valorEvento + (deslocamento || 0);
+
+    if (!totalComDeslocamento) {
+        sinalPagoInput.value = '';
+        valorRestanteInput.value = '';
+        saldoDevedorInput.value = '';
+        return;
+    }
+
+    let valorRestante = totalComDeslocamento;
+
+    // Ambos vazios → apenas mostra total
+    if (percentualAdiantamento === null && sinalPago === null) {
+        valorRestanteInput.value = totalComDeslocamento.toFixed(2);
+        saldoDevedorInput.value = totalComDeslocamento.toFixed(2);
+        return;
+    }
+
+    // Usuário apagou percentual
+    if (origem === 'percentual' && percentualAdiantamento === null) {
+        // não mexe no que o usuário digitou em sinal_pago; apenas recalcula restante se houver sinal
+        if (sinalPago !== null && sinalPago > 0) {
+            valorRestante = totalComDeslocamento - sinalPago;
+            valorRestanteInput.value = valorRestante.toFixed(2);
+            saldoDevedorInput.value = valorRestante.toFixed(2);
+        } else {
+            valorRestanteInput.value = totalComDeslocamento.toFixed(2);
+            saldoDevedorInput.value = totalComDeslocamento.toFixed(2);
+        }
+        return;
+    }
+
+    // Usuário apagou sinal pago
+    if (origem === 'sinal' && sinalPago === null) {
+        adiantamentoInput.value = '';
+        valorRestanteInput.value = totalComDeslocamento.toFixed(2);
+        saldoDevedorInput.value = totalComDeslocamento.toFixed(2);
+        return;
+    }
+
+    // Percentual comanda quando preenchido
+    if (origem !== 'sinal' && percentualAdiantamento !== null && percentualAdiantamento > 0 && percentualAdiantamento <= 100) {
+        sinalPago = totalComDeslocamento * (percentualAdiantamento / 100);
+        valorRestante = totalComDeslocamento - sinalPago;
+        sinalPagoInput.value = sinalPago.toFixed(2);
+        valorRestanteInput.value = valorRestante.toFixed(2);
+        saldoDevedorInput.value = valorRestante.toFixed(2);
+        return;
+    }
+
+    // Quando usuário digita no sinal pago, recalcula apenas o resto e o percentual
+    if (origem === 'sinal' && sinalPago !== null && sinalPago >= 0) {
+        if (sinalPago > totalComDeslocamento) {
+            sinalPago = totalComDeslocamento;
+            sinalPagoInput.value = totalComDeslocamento.toFixed(2);
+        }
+        valorRestante = totalComDeslocamento - sinalPago;
+        valorRestanteInput.value = valorRestante.toFixed(2);
+        saldoDevedorInput.value = valorRestante.toFixed(2);
+        const novoPercentual = (sinalPago / totalComDeslocamento) * 100;
+        adiantamentoInput.value = novoPercentual.toFixed(2);
+        return;
+    }
+
+    valorRestanteInput.value = totalComDeslocamento.toFixed(2);
+    saldoDevedorInput.value = totalComDeslocamento.toFixed(2);
+}
+
+
+            // CONTROLE DE TIPO DE PAGAMENTO
+            tipoPagamentoSelect.addEventListener('change', function() {
+                if (this.value == '1') { // À Vista
+                    adiantamentoGroup.style.display = 'none';
+                    sinalPagoGroup.style.display = 'none';
+                    valorRestanteGroup.style.display = 'none';
+                    
+                    // Limpar campos
+                    adiantamentoInput.value = '';
+                    sinalPagoInput.value = '';
+                    valorRestanteInput.value = '';
+                    saldoDevedorInput.value = '';
+                } else if (this.value == '0') { // Com Entrada
+                    adiantamentoGroup.style.display = 'block';
+                    sinalPagoGroup.style.display = 'block';
+                    valorRestanteGroup.style.display = 'block';
+                    
+                    // Recalcular se já houver valores
+                    if (adiantamentoInput.value) {
+                        calcularValores();
+                    }
+                }
+            });
+
+            // EVENTOS DE CÁLCULO
+            valorEventoInput.addEventListener('input', function () { calcularValores('valor_evento'); });
+            deslocamentoInput.addEventListener('input', function () { calcularValores('deslocamento'); });
+            adiantamentoInput.addEventListener('input', function () { calcularValores('percentual'); });
+            sinalPagoInput.addEventListener('input', function () { calcularValores('sinal'); });
+
+
+            // Adiciona botões de navegação
+            sections.forEach((section, index) => {
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'button-container d-flex justify-content-between mt-4';
+
+                if (index > 0) {
+                    const prevButton = document.createElement('button');
+                    prevButton.type = 'button';
+                    prevButton.className = 'btn btn-secondary';
+                    prevButton.textContent = 'Anterior';
+                    prevButton.onclick = () => goToStep(currentStep - 1);
+                    buttonContainer.appendChild(prevButton);
+                }
+
+                if (index < sections.length - 1) {
+                    const nextButton = document.createElement('button');
+                    nextButton.type = 'button';
+                    nextButton.className = 'btn btn-primary';
+                    nextButton.textContent = 'Próximo';
+                    nextButton.onclick = () => goToStep(currentStep + 1);
+                    buttonContainer.appendChild(nextButton);
+                }
+
+                section.querySelector('.card-body').appendChild(buttonContainer);
+            });
+
+            // Esconde todas as seções exceto a primeira
+            sections.forEach((section, index) => {
+                if (index > 0) section.style.display = 'none';
+            });
+
+            function validateRequiredFields(section) {
+                const requiredFields = section.querySelectorAll('[required], .required-field input, .required-field select');
+                let isValid = true;
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.classList.add('is-invalid');
+                        
+                        let errorDiv = field.nextElementSibling;
+                        if (!errorDiv || !errorDiv.classList.contains('invalid-feedback')) {
+                            errorDiv = document.createElement('div');
+                            errorDiv.className = 'invalid-feedback';
+                            field.parentNode.insertBefore(errorDiv, field.nextSibling);
+                        }
+                        errorDiv.textContent = 'Este campo é obrigatório';
+                    } else {
+                        field.classList.remove('is-invalid');
+                        const errorDiv = field.nextElementSibling;
+                        if (errorDiv && errorDiv.classList.contains('invalid-feedback')) {
+                            errorDiv.remove();
+                        }
+                    }
+                });
+                
+                return isValid;
+            }
+
+            function goToStep(step) {
+                if (step < 1 || step > sections.length) return;
+                
+                if (step > currentStep) {
+                    const currentSection = sections[currentStep - 1];
+                    if (!validateRequiredFields(currentSection)) {
+                        alert('Por favor, preencha todos os campos obrigatórios antes de continuar.');
+                        return;
+                    }
+                }
+
+                steps.forEach(s => {
+                    if (parseInt(s.dataset.step) === step) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+
+                sections.forEach((section, index) => {
+                    section.style.display = index === step - 1 ? 'block' : 'none';
+                });
+
+                currentStep = step;
+            }
+
+            // Fetch products
+            fetch('fetch_products.php')
+                .then(response => response.json())
+                .then(data => {
+                    const produtoSelect = document.getElementById('produto');
+                    data.forEach(product => {
+                        const option = document.createElement('option');
+                        option.value = product.idproduto;
+                        option.textContent = product.produto;
+                        produtoSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching products:', error));
+
+            // Verificar se está editando
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventId = urlParams.get('event_id');
+            const clienteId = urlParams.get('cliente_id');
+            const id = urlParams.get('id');
+
+            if (id) {
+                const submitButton = document.querySelector('button[type="submit"]');
+                submitButton.disabled = true;
+                submitButton.style.display = 'none';
+
+                const updateButton = document.createElement('button');
+                updateButton.innerText = 'Alterar Dados';
+                updateButton.className = 'btn btn-submit';
+                updateButton.style.backgroundColor = '#FF9E7D';
+                updateButton.type = 'button';
+                updateButton.id = 'update-btn';
+                submitButton.parentNode.appendChild(updateButton);
+
+                let clienteIdFromData;
+
+                fetch(`fetch_data.php?id=${id}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('nome').value = data.nome;
+                        document.getElementById('nacionalidade').value = data.nacionalidade;
+                        document.getElementById('estadocivil').value = data.estadocivil;
+                        document.getElementById('profissao').value = data.profissao;
+                        document.getElementById('cpf').value = data.cpf;
+                        document.getElementById('cnpj').value = data.cnpj;
+                        document.getElementById('celular').value = data.celular;
+                        document.getElementById('endereco').value = data.endereco;
+                        document.getElementById('bairro').value = data.bairro;
+                        document.getElementById('cidade').value = data.cidade;
+                        document.getElementById('cep').value = data.cep;
+                        document.getElementById('email').value = data.email;
+                        document.getElementById('aniversariante').value = data.aniversariante;
+                        document.getElementById('data_evento').value = data.data_evento;
+                        document.getElementById('local_evento').value = data.local;
+                        document.getElementById('endereco_evento').value = data.enderecoevento;
+                        document.getElementById('cidade_evento').value = data.cidadeevento;
+                        document.getElementById('cep_evento').value = data.cepevento;
+                        document.getElementById('produto').value = data.tema;
+                        document.getElementById('inicio_evento').value = data.horario_inicio;
+                        document.getElementById('encerramento_evento').value = data.horario_termino;
+                        document.getElementById('valor_evento').value = data.valor_evento;
+                        document.getElementById('deslocamento').value = data.deslocamento;
+                        document.getElementById('sinal_pago').value = data.sinal_pago;
+                        document.getElementById('saldo_devedor').value = data.saldo_devedor;
+
+                        const autorizacaoValue = data.autorizacao;
+                        document.querySelector(`input[name="autorizacao"][value="${autorizacaoValue}"]`).checked = true;
+
+                        clienteIdFromData = data.idcliente;
+                        const ideventoInput = document.createElement('input');
+                        ideventoInput.type = 'hidden';
+                        ideventoInput.name = 'idevento';
+                        ideventoInput.value = data.idevento;
+                        document.querySelector('form').appendChild(ideventoInput);
+                    })
+                    .catch(error => console.error('Erro ao buscar os dados:', error));
+
+                updateButton.addEventListener('click', function () {
+                    const formData = new FormData(document.querySelector('form'));
+
+                    fetch('update_form.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(result => {
+                            if (result.success) {
+                                alert('Dados atualizados com sucesso!');
+                                window.location.href = 'confirmation.php?cliente_id='+ clienteIdFromData +'&event_id=' + id;
+                            } else {
+                                alert('Erro ao atualizar os dados: ' + result.error);
+                            }
+                        })
+                        .catch(error => console.error('Erro ao atualizar os dados:', error));
+                });
+            }
+            
+            // Máscaras de input
+            function maskCPF(cpf) {
+                return cpf
+                    .replace(/\D/g, '')
+                    .replace(/(\d{3})(\d)/, '$1.$2')
+                    .replace(/(\d{3})(\d)/, '$1.$2')
+                    .replace(/(\d{3})(\d{1,2})/, '$1-$2')
+                    .replace(/(-\d{2})\d+?$/, '$1');
+            }
+            
+            function maskCNPJ(cnpj) {
+                return cnpj
+                    .replace(/\D/g, '')
+                    .replace(/(\d{2})(\d)/, '$1.$2')
+                    .replace(/(\d{3})(\d)/, '$1.$2')
+                    .replace(/(\d{3})(\d)/, '$1/$2')
+                    .replace(/(\d{4})(\d)/, '$1-$2')
+                    .replace(/(-\d{2})\d+?$/, '$1');
+            }
+            
+            function maskPhone(phone) {
+                return phone
+                    .replace(/\D/g, '')
+                    .replace(/(\d{2})(\d)/, '($1) $2')
+                    .replace(/(\d{5})(\d)/, '$1-$2')
+                    .replace(/(-\d{4})\d+?$/, '$1');
+            }
+            
+            function maskCEP(cep) {
+                return cep
+                    .replace(/\D/g, '')
+                    .replace(/(\d{5})(\d)/, '$1-$2')
+                    .replace(/(-\d{3})\d+?$/, '$1');
+            }
+            
+            document.getElementById('cpf').addEventListener('input', function() {
+                this.value = maskCPF(this.value);
+            });
+            
+            document.getElementById('cnpj').addEventListener('input', function() {
+                this.value = maskCNPJ(this.value);
+            });
+            
+            document.getElementById('celular').addEventListener('input', function() {
+                this.value = maskPhone(this.value);
+            });
+            
+            document.getElementById('cep').addEventListener('input', function() {
+                this.value = maskCEP(this.value);
+            });
+            
+            document.getElementById('cep_evento').addEventListener('input', function() {
+                this.value = maskCEP(this.value);
+            });
+            
+            // Animações ao scroll
+            function animateOnScroll() {
+                const cards = document.querySelectorAll('.card');
+                cards.forEach(card => {
+                    if (card.getBoundingClientRect().top < window.innerHeight - 100) {
+                        card.classList.add('animate-card');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', animateOnScroll);
+            animateOnScroll();
+
+            // CPF e CNPJ - desabilitar campo alternativo
+            const cpfInput = document.getElementById('cpf');
+            const cnpjInput = document.getElementById('cnpj');
+
+            function toggleFields(activeField, inactiveField) {
+                if (activeField.value.trim() !== '') {
+                    inactiveField.disabled = true;
+                    inactiveField.style.backgroundColor = '#f8f9fa';
+                    inactiveField.style.cursor = 'not-allowed';
+                } else {
+                    inactiveField.disabled = false;
+                    inactiveField.style.backgroundColor = '';
+                    inactiveField.style.cursor = '';
+                }
+            }
+    
+            cpfInput.addEventListener('input', function() {
+                toggleFields(cpfInput, cnpjInput);
+            });
+    
+            cnpjInput.addEventListener('input', function() {
+                toggleFields(cnpjInput, cpfInput);
+            });
+        });
+
+        // Validação do formulário
+        function validateForm(event) {
+            event.preventDefault();
+            let isValid = true;
+
+            const cpfInput = document.getElementById('cpf');
+            const cnpjInput = document.getElementById('cnpj');
+
+            if (!cpfInput.value.trim() && !cnpjInput.value.trim()) {
+                cpfInput.value = '00000000000';
+            }
+            if (!cnpjInput.value.trim()) {
+                cnpjInput.value = '00000000000000';
+            }
+
+            const sections = document.querySelectorAll('.card');
+            sections.forEach(section => {
+                const requiredFields = section.querySelectorAll('[required], .required-field input, .required-field select');
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.classList.add('is-invalid');
+                        
+                        let errorDiv = field.nextElementSibling;
+                        if (!errorDiv || !errorDiv.classList.contains('invalid-feedback')) {
+                            errorDiv = document.createElement('div');
+                            errorDiv.className = 'invalid-feedback';
+                            field.parentNode.insertBefore(errorDiv, field.nextSibling);
+                        }
+                        errorDiv.textContent = 'Este campo é obrigatório';
+                    } else {
+                        field.classList.remove('is-invalid');
+                        const errorDiv = field.nextElementSibling;
+                        if (errorDiv && errorDiv.classList.contains('invalid-feedback')) {
+                            errorDiv.remove();
+                        }
+                    }
+                });
+            });
+
+            if (!isValid) {
+                alert('Por favor, preencha todos os campos obrigatórios antes de enviar o formulário.');
+                return false;
+            }
+
+            event.target.submit();
+        }
+    </script>
+</body>
+</html>
